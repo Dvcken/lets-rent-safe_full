@@ -1,0 +1,190 @@
+// src/components/Header/Header.module.scss
+
+@use "sass:math";
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mix;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var.$spacing-lg;
+  height: 70px;
+  background-color: var.$header-bg;
+  border-bottom: 2px solid var.$border-color;
+  position: relative;
+  z-index: 100;
+  @include mix.theme-transition(background-color, border-color);
+}
+
+.logo a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var.$primary-color;
+  text-decoration: none;
+  @include mix.theme-transition(color);
+}
+
+.logoBlock {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logoImg {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.logoDivider {
+  width: 2px;
+  height: 36px;
+  background: var.$text-color;
+  margin: 0 12px;
+}
+
+.logoText {
+  font-size: 2rem;
+  font-weight: 400;
+  color: var.$text-color;
+  letter-spacing: 0.01em;
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: var.$spacing-lg;
+
+  nav {
+    display: flex;
+    gap: var.$spacing-md;
+
+    .navLink {
+      color: var.$text-color;
+      padding: var.$spacing-sm;
+      border-radius: math.div(var.$border-radius, 2);
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      @include mix.theme-transition(color);
+      position: relative; // для ::after
+
+      &:hover {
+        background-color: var.$interactive-bg-hover;
+        color: var.$primary-color;
+      }
+
+      // Стили для активной ссылки (подчеркивание)
+      &.active {
+        color: var.$primary-color;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px; // Расположение подчеркивания
+          left: 10%;
+          width: 80%;
+          height: 2px;
+          background-color: var.$primary-color;
+        }
+      }
+    }
+  }
+}
+
+.mobileBurger {
+  display: none;
+  z-index: 1001;
+}
+
+.mobileNav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  max-width: 320px;
+  height: 100vh;
+  background-color: var.$header-bg;
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  padding: 100px 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid var.$border-color;
+  @include mix.theme-transition;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    a { // Здесь можно оставить тег 'a', так как стили проще
+      color: var.$text-color;
+      text-decoration: none;
+      font-size: 1.5rem;
+      @include mix.theme-transition(color);
+
+      &.active {
+        color: var.$primary-color;
+      }
+    }
+  }
+
+  .mobileThemeSwitcher {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var.$border-color;
+    @include mix.theme-transition(border-color);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+@include mix.screen-tablet {
+  .desktopNav {
+    display: none;
+  }
+  .mobileBurger {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 0 8px;
+    height: 54px;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .logoImg {
+    height: 32px;
+  }
+  .logoDivider {
+    height: 24px;
+    margin: 0 6px;
+  }
+  .logoText {
+    font-size: 1.1rem;
+  }
+  .logoBlock {
+    gap: 8px;
+  }
+}

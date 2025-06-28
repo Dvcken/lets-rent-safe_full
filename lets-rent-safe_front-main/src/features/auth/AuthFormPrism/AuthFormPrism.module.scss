@@ -1,0 +1,237 @@
+// --- ИМПОРТ МОДУЛЕЙ SASS ---
+@use "sass:color"; // Импортируем модуль для работы с цветом
+@use "sass:math";  // Импортируем модуль для математических операций
+
+// --- ПЕРЕМЕННЫЕ (в rem) ---
+$primary-color: #6c63ff;
+$text-light: #ffffff;
+$text-dark: #2d3748;
+$navy-blue: #42509e;
+$border-color: #e2e8f0;
+$face-bg-color: rgba(255, 255, 255, 0.98);
+
+// --- РАЗМЕРЫ ---
+$prism-length: 20rem;
+$prism-height: 32rem;
+$spacing: 1.5rem;
+$br: 0.3125rem;
+
+// --- СТИЛИ ---
+
+.wrapper {
+  width: 100%;
+  max-width: $prism-length;
+  height: auto;
+  perspective: 50rem;
+  text-align: left;
+}
+
+.recPrism {
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  will-change: transform;
+}
+
+.face {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: auto;
+  padding: $spacing;
+  background: $face-bg-color;
+  border: 1px solid $border-color;
+  border-radius: $br;
+  box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    h2 {
+      font-size: 1.5em;
+      color: $primary-color;
+      margin-bottom: $spacing;
+      flex-shrink: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .fieldWrapper {
+        position: relative;
+        margin-bottom: $spacing;
+        flex-shrink: 0;
+
+        label {
+          position: absolute;
+          pointer-events: none;
+          font-size: 1em;
+          top: 50%;
+          left: 0.3125rem;
+          transform: translateY(-50%);
+          transition: all ease-in 0.25s;
+          // ИСПРАВЛЕНО: lighten() -> color.adjust()
+          color: color.adjust($text-dark, $lightness: 40%);
+          background-color: $face-bg-color;
+          padding: 0 0.3125rem;
+        }
+
+        input {
+          width: 100%;
+          border: 1px solid $border-color;
+          border-radius: $br;
+          padding: 0.75rem;
+          font-size: 1em;
+          background: transparent;
+          color: $text-dark;
+          &::placeholder { color: transparent; }
+          &:focus, &:not(:placeholder-shown) {
+            + label {
+              top: 0;
+              font-size: 0.8em;
+              color: $primary-color;
+            }
+          }
+          &:focus {
+            outline: 2px solid transparent;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 2px rgba($primary-color, 0.5);
+          }
+        }
+
+        input[type="submit"] {
+          cursor: pointer;
+          background: $primary-color;
+          color: $text-light;
+          font-weight: bold;
+          border: none;
+          &:hover {
+            // ИСПРАВЛЕНО: darken() -> color.adjust()
+            background-color: color.adjust($primary-color, $lightness: -7%);
+            box-shadow: 0 0.25rem 0.75rem rgba($primary-color, 0.3);
+          }
+          &:active { transform: scale(0.98); }
+        }
+      }
+
+      .formLinks {
+        margin-top: auto;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  &.faceFront, &.faceBack, &.faceRight, &.faceLeft {
+    transform-style: preserve-3d;
+    transform: translateZ(calc($prism-length / 2));
+  }
+  &.faceFront { transform: rotateY(0deg) translateZ(calc($prism-length / 2)); }
+  &.faceBack { transform: rotateY(180deg) translateZ(calc($prism-length / 2)); }
+  &.faceRight { transform: rotateY(90deg) translateZ(calc($prism-length / 2)); }
+  &.faceLeft { transform: rotateY(-90deg) translateZ(calc($prism-length / 2)); }
+}
+
+.login-page .face {
+  position: relative;
+  z-index: 10;
+  background: rgba(255,255,255,0.7);
+}
+
+.nav {
+  margin-bottom: $spacing;
+  padding: 0;
+  text-align: center;
+  li {
+    display: inline-block;
+    list-style-type: none;
+    font-size: 1.1em;
+    // ИСПРАВЛЕНО: $spacing / 2 -> math.div($spacing, 2)
+    margin: 0 math.div($spacing, 2);
+    color: $navy-blue;
+    position: relative;
+    cursor: pointer;
+    padding-bottom: 0.3125rem;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      border-bottom: 2px solid $primary-color;
+      transition: all ease-in 0.25s;
+    }
+    &:hover:after { width: 100%; }
+  }
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  padding-left: 0.3125rem;
+  display: block;
+  margin-top: 0.25rem;
+  position: absolute;
+  bottom: -1.2rem;
+}
+
+.psw, .signup, .singin {
+  display: block;
+  // ИСПРАВЛЕНО: $spacing / 2 -> math.div($spacing, 2)
+  margin-top: math.div($spacing, 2);
+  font-size: 0.9em;
+  text-align: center;
+  color: $primary-color;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+small {
+  font-size: 0.9em;
+  // ИСПРАВЛЕНО: lighten() -> color.adjust()
+  color: color.adjust($text-dark, $lightness: 20%);
+  line-height: 1.5;
+  display: block;
+  margin-bottom: $spacing;
+}
+
+.userTypeSwitcher {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem; // Отступ снизу до следующего поля
+}
+
+.userTypeSwitcher button {
+  flex-grow: 1; // Кнопки займут равное пространство
+  padding: 0.75rem;
+  border: 1px solid $border-color;
+  background: transparent;
+  color: color.adjust($text-dark, $lightness: 20%);
+  border-radius: $br;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+}
+
+// Стиль для активной, выбранной кнопки
+.activeType {
+  background-color: $primary-color !important;
+  color: $text-light !important;
+  border-color: $primary-color !important;
+  box-shadow: 0 0.25rem 0.75rem rgba($primary-color, 0.3);
+}

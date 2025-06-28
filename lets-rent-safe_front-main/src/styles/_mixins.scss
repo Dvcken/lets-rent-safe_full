@@ -1,0 +1,32 @@
+@use "sass:list";
+
+@mixin flex-center($direction: row) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+@mixin screen-tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin screen-mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin theme-transition($properties...) {
+  @if list.length($properties) == 0 {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  } @else {
+    $transitions: ();
+    @each $prop in $properties {
+      $transitions: list.append($transitions, #{$prop} 0.3s ease, comma);
+    }
+    transition: $transitions;
+  }
+}

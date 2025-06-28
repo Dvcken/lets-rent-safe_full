@@ -1,0 +1,92 @@
+// src/components/MapComponent/MapComponent.module.scss
+
+.mapWrapper {
+  height: 600px;
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.leafletContainer {
+  height: 100%;
+  width: 100%;
+}
+
+// --- UPDATED STYLES for a bigger, better-looking Popup ---
+
+.popupContainer {
+  // No fixed width needed here anymore, as the <Popup> minWidth prop controls it.
+  // The content will naturally fill the available space.
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.popupImage {
+  width: 100%;
+  height: 150px; // Increased height for better proportions
+  object-fit: cover;
+  border-radius: 8px 8px 0 0; // Match the parent wrapper's radius
+  display: block;
+  background-color: #f0f0f0; // A light background for while the image loads
+}
+
+.popupContent {
+  padding: 15px; // Increased padding for more breathing room
+}
+
+.popupTitle {
+  font-size: 19px; // Slightly larger title
+  font-weight: 700; // Bolder
+  margin: 0 0 8px 0;
+  color: #222;
+}
+
+.popupDescription {
+  margin: 0 0 16px 0; // More space below the description
+  color: #555;
+}
+
+.popupLink {
+  display: inline-block;
+  width: 100%; // Make the button full-width
+  box-sizing: border-box; // Ensures padding is included in the width
+  padding: 10px 16px; // Taller button
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px; // Softer corners
+  font-weight: 600; // Bolder text
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px); // Subtle hover effect
+  }
+}
+
+
+// --- GLOBAL OVERRIDE for Leaflet's Popup ---
+// These rules are still essential.
+:global {
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); // Add a subtle shadow to the popup itself
+  }
+
+  .leaflet-popup-content {
+    margin: 0;
+    width: 100% !important;
+  }
+
+  // Make the popup tip blend better
+  .leaflet-popup-tip {
+    box-shadow: none;
+  }
+}

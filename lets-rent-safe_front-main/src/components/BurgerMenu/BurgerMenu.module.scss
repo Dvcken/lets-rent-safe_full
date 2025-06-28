@@ -1,0 +1,43 @@
+@use '../../styles/variables' as var;
+
+.wrapper {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  background: inherit;
+  mix-blend-mode: darken;
+  height: 100%;
+
+  &.active {
+    .b1 {
+      transform: rotateZ(45deg) scaleX(1.2) translateY(0px);
+    }
+    .b3 {
+      transform: rotateZ(-45deg) scaleX(1.2) translateY(0px);
+    }
+    .b2 {
+      transform: rotateZ(180deg) scaleX(0.2) translateY(0px);
+    }
+  }
+}
+
+.ball {
+  grid-area: 1/1;
+  background-color: var.$text-color;
+  width: 28px;
+  height: 3px;
+  border-radius: 2px;
+  transition: 0.5s ease-in-out;
+  transform: translateY(0px);
+}
+
+.b1 { transform: scaleX(1.2) translateY(-7px); }
+.b2 { transform: scaleX(1.2) translateY(0px); }
+.b3 { transform: scaleX(1.2) translateY(7px); }
